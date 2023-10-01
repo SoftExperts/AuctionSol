@@ -1,0 +1,151 @@
+﻿@model ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "AddBidder";
+}
+<div class="page-rightheader ms-md-auto mt-3">
+    <!-- Adjusted class for right alignment and added margin class -->
+    <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+        <div class="btn-list">
+            <a asp-action="Logout" asp-controller="Login" class="btn btn-primary me-3" style="margin-left: 509px;">Logout</a> <!-- Updated controller name to "Login" -->
+        </div>
+    </div>
+</div>
+<br />
+<div class="row" style="margin-left: 25px; margin-right: 25px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Add Bidder</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Save" method="Post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UserId" class="control-label"></label>
+                                <input asp-for="UserId" class="form-control" />
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label"></label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Phone" class="control-label"></label>
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <center>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </center>
+
+                </form>
+            </div>
+        </div>
+        <div class="page-leftheader ms-md-auto">
+            <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                <div class="btn-list">
+                    <a asp-action="list" asp-controller="Admin" class="btn btn-primary me-3">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+<!-- Add this div to display the records -->
+<div id="recordsTable">
+    <!-- The table will be displayed here -->
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+        <script>
+            $(document).ready(function () {
+                $('form').submit(function (e) {
+                    e.preventDefault(); // Prevent the default form submission
+
+                    // Get the Id from the URL
+                    var url = window.location.href;
+                    var parts = url.split('/');
+                    var auctionId = parts[parts.length - 1]; // Assuming the Id is the last part of the URL
+
+                    // Create an object with the form data and auctionId
+                    var formData = {
+                        UserId: $('#UserId').val(),
+                        Password: $('#Password').val(),
+                        UserName: $('#UserName').val(),
+                        Phone: $('#Phone').val(),
+                        AuctionId: auctionId
+                    };
+
+                    $.ajax({
+                        url: '@Url.Action("Save", "Bidder")', // Use the correct URL for your controller action
+                        type: 'POST',
+                        data: formData, // Use the modified form data with auctionId
+                        success: function (result) {
+                            // Update the recordsTable div with the new records table
+                            $('#recordsTable').html(result);
+                        },
+                        error: function () {
+                            alert('An error occurred while saving the bid.');
+                        }
+                    });
+                });
+
+                // Call the function when the document is ready
+                fetchDataOnDocumentReady();
+            });
+          
+
+        function fetchDataOnDocumentReady() {
+            // Get the Id from the URL
+            var url = window.location.href;
+            var parts = url.split('/');
+            var auctionId = parts[parts.length - 1]; // Assuming the Id is the last part of the URL
+
+            // Create an object with the form data and auctionId
+            var formData = {
+                AuctionId: auctionId
+            };
+
+            $.ajax({
+                url: '@Url.Action("GetBidders", "Bidder")', // Use the correct URL for your controller action
+                type: 'GET',
+                data: formData, // Use the modified form data with auctionId
+                success: function (result) {
+                    // Update the recordsTable div with the new records table
+                    $('#recordsTable').html(result);
+                },
+                error: function () {
+                    alert('An error occurred while saving the bid.');
+                }
+            });
+        }
+    </script>
+
+}

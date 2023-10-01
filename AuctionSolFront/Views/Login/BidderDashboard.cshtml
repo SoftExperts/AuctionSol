@@ -1,0 +1,202 @@
+﻿@model ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "BidderDashboard";
+    double? bid = 0.0;
+}
+<br />
+<center>Bidder Dashboard</center>
+<div class="row" style="margin-left: 100px; margin-right: 100px; margin-top:20px">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <input type="hidden" asp-for="AuctionId" />
+        <input type="hidden" asp-for="UserId" />
+        <div class="card">
+          <br />
+            <div style="text-align: center;">
+                <div id="bidMessage" style="background-color:#34db77bf; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <!-- Your content goes here -->
+                </div>
+            </div>
+
+        
+            <br />
+            <div class="card-body">
+
+                @{
+                    if (Model.LastBid > 0)
+                    {
+                        bid = Model.LastBid + Model.BidIncrement;
+
+                    }
+                    else
+                    {
+                        bid = Model.BidAmount + Model.BidIncrement;
+                    }
+                }
+
+                <div id="currentBidAmount">
+                    Current Bid Amount: @Model.LastBid
+                </div>
+
+                <!-- Add this button inside your <div class="card-body"> -->
+                <center><button id="bidButton" class="btn btn-primary">Click to Bid at @bid </button></center>
+                <br />
+
+                <dl class="row">
+                    <dt class="col-sm-4">
+                       Current Bid
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.LastBid)
+                    </dd>
+                    <dt class="col-sm-4">
+                       Auction Name
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.AuctionName)
+                    </dd>
+                    <dt class="col-sm-4">
+                      Start Date
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.AuctionStartDate)
+                    </dd>
+                    <dt class="col-sm-4">
+                        End Date
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.AuctionEndDate)
+                    </dd>
+                    <dt class="col-sm-4">
+                         Bid Increment  
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.BidIncrement)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Reserved Amount
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.BidAmount)
+                    </dd>
+                </dl>
+                <div class="page-leftheader ms-md-auto">
+                    <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                        <div class="btn-list">
+                            <a asp-action="Logout" asp-controller="login" class="btn btn-primary me-3">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            var count = 1; 
+
+            $("#bidButton").click(function () {
+                debugger;
+                console.log("@Model.LastBid" + @Model.LastBid)
+                console.log("@Model.AuctionId" + @Model.AuctionId)
+                console.log("@Model.BidIncrement" + @Model.BidIncrement)
+                
+
+                var currentBid = @Model.LastBid;
+
+                if (currentBid > 0) {
+                    if (count > 1) {
+                        currentBid = getCurrentBidAmount();
+                    } else {
+                        currentBid = @Model.LastBid;
+                    }
+                    count++;
+                } else {
+                    currentBid = @Model.BidAmount;
+                }
+
+                var auctionId = @Model.AuctionId; // Auction ID from the model
+                var bidIncrement = @Model.BidIncrement; // Bid increment from the model
+                var newBidAmount = currentBid + bidIncrement;
+
+                var userId = `@Model.UserId`;
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Bidder/UpdateBid", // Replace with your controller and action
+                    data: { auctionId: auctionId, newBidAmount: newBidAmount, userId: userId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Handle the success response here (if needed)
+                            // For example, update the display with the new bid amount
+
+                            var bidMessage = "You bid at " + newBidAmount;
+                            $("#bidMessage").text(bidMessage).css({
+                                "background-color": "skyblue",
+                                "padding": "10px",
+                                "border-radius": "5px",
+                                "box-shadow": "0 0 10px rgba(0, 0, 0, 0.2)"
+                            });
+
+                            // Update the button text with the new bid amount
+                            $("#bidButton").text("Click to Bid at " + newBidAmount);
+
+                            // Update the current bid amount
+                            $("#currentBidAmount").text("Current Bid Amount: " + newBidAmount);
+
+                            getLatestBidInfo();
+                        } else {
+                            // Redirect to the login page when success is false
+                            window.location.href = '/login'; // Replace '/Login' with the actual URL of your login page
+                        }
+                    },
+
+                    error: function (error) {
+                        // Handle the error response here (if needed)
+                        console.log(error);
+                    }
+                });
+            });
+        });
+            // AJAX call to send the new bid amount
+        
+            function getLatestBidInfo() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Bidder/GetLatestBidInfo",
+                    dataType: "json",
+                    success: function (response) {
+                        debugger;
+                        // Access the 'data' object within the response
+                        var data = response.data;
+
+                        // Access the specific fields within the 'data' object
+                        var lastBid = data.lastBid;
+                        var bidIncrement = data.bidIncrement;
+
+                        // Use the values as needed, for example, update a UI element
+                        $("#currentBidAmount").text("Current Bid Amount: " + lastBid);
+                        $("#bidButton").text("Click to Bid at " + (lastBid + bidIncrement));
+                    },
+                    error: function (error) {
+                        // Handle the error response here (if needed)
+                        console.log(error);
+                    }
+                });
+            }
+        function getCurrentBidAmount() {
+            var buttonText = $("#bidButton").text(); // Get the text of the button
+            var bidAmountMatch = buttonText.match(/\d+/); // Extract numeric digits from the text
+            if (bidAmountMatch) {
+                return parseInt(bidAmountMatch[0]); // Convert the matched string to an integer
+            }
+            return 0; // Return 0 if no numeric value is found
+        }
+         
+    </script>
+
+
+}

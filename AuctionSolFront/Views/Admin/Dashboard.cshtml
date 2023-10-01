@@ -1,0 +1,104 @@
+﻿@model ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "BidderDashboard";
+}
+<style>
+    #StatusLive {
+        background-color: #4CAF50; /* Green background color for online status */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding for spacing */
+        border-radius: 5px; /* Rounded corners */
+        font-weight: bold; /* Bold text */
+        text-align: center; /* Center text horizontally */
+        width: 200px; /* Set a fixed width or adjust as needed */
+        margin: 0 auto; /* Center the div horizontally */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+    }
+</style>
+
+
+
+<br />
+<center>Admin Dashboard</center>
+
+<div class="row" style="margin-left: 100px; margin-right: 100px; margin-top:20px">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <input type="hidden" asp-for="AuctionId" />
+        <input type="hidden" id="userId" asp-for="UserId" />
+        <div class="card">
+            <br />
+            <div id="StatusLive">
+                
+            </div>
+            <br />
+            <div class="card-body">
+                <div id="adminMessage" style="background-color:#3e34db; color: #fff; padding: 10px; border-radius: 5px; text-align: center;">
+                    <!-- Your admin message content goes here -->
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Type a message:</label>
+                    <input type="text" class="form-control" id="message" placeholder="Enter your message">
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="button" class="btn btn-primary">Send</button>
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Bidder
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.UserId)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Current Bid
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.LastBid)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Auction Name
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.AuctionName)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Start Date
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.AuctionStartDate)
+                    </dd>
+                    <dt class="col-sm-4">
+                        End Date
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.AuctionEndDate)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Bid Increment
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.BidIncrement)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Reserved Amount
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.BidAmount)
+                    </dd>
+                </dl>
+                <div class="page-leftheader ms-md-auto">
+                    <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                        <div class="btn-list">
+                            <a asp-action="list" asp-controller="admin" class="btn btn-danger me-3">Back</a>
+                            <a asp-action="Logout" asp-controller="login" class="btn btn-primary me-3">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

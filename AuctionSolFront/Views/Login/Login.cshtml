@@ -1,0 +1,116 @@
+﻿@model ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="page responsive-log login-bg">
+    <div class="page-single">
+        <div class="container">
+            <div class="row">
+                <div class="col mx-auto">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6 col-xl-4 col-xxl-4">
+                            <div class="card my-5">
+                                <div class="p-4 pt-6 text-center">
+                                    <h1 class="mb-2">Login</h1>
+                                    <p class="text-muted">Sign In to your account</p>
+                                </div>
+
+                                <!-- Integrate your Razor form here -->
+                                <form asp-action="Login" class="card-body pt-3" id="login" name="login">
+                                    <input type="hidden" asp-for="Id" />
+
+                                    <div class="form-group">
+                                        <label class="form-label">Mail or Username</label>
+                                        <div class="input-group mb-4">
+                                            <div class="input-group">
+                                                <a href="" class="input-group-text">
+                                                    <i class="fe fe-mail" aria-hidden="true"></i>
+                                                </a>
+                                                <input asp-for="UserId" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Password</label>
+                                        <div class="input-group mb-4">
+                                            <div class="input-group" id="Password-toggle">
+                                                <a href="" class="input-group-text">
+                                                    <i class="fe fe-eye-off" aria-hidden="true"></i>
+                                                </a>
+                                                <input asp-for="Password" type="password" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add any additional form fields or elements here -->
+
+                                    <div class="form-group">
+                                        <input type="submit" value="Login" class="btn btn-primary btn-block" />
+                                    </div>
+                                </form>
+
+                                <!-- End of Razor form integration -->
+
+                                <div class="card-body border-top-0 pb-6 pt-2">
+                                    <div class="text-center">
+                                        <span class="avatar brround me-3 bg-primary-transparent text-primary"><i class="ri-facebook-line"></i></span>
+                                        <span class="avatar brround me-3 bg-primary-transparent text-primary"><i class="ri-instagram-line"></i></span>
+                                        <span class="avatar brround me-3 bg-primary-transparent text-primary"><i class="ri-twitter-line"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Handle form submission
+            $('#login-form').submit(function (e) {
+                e.preventDefault();
+
+                // Serialize the form data into JSON
+                var formData = {
+                    Id: $('#Id').val(),
+                    UserId: $('#UserId').val(),
+                    Password: $('#Password').val()
+                };
+
+                // Send the AJAX request to your Login method
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Login", "Login")', // Replace with your controller and action names
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        // Handle the success response
+                        console.log(response);
+
+                        if (response.success) {
+                            // Redirect to Admin/List on successful login
+                            window.location.href = '@Url.Action("List", "Admin")'; // Replace with the actual URL
+                        } else {
+                            // Notify the user that the login was not successful
+                            alert('Login failed. Please check your credentials.');
+                        }
+                    },
+                    error: function (error) {
+                        // Handle errors
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+

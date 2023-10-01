@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ViewModels.AuctionVM>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<!--Page header-->
+<div class="page-header d-xl-flex d-block" style="margin-left: 35px; margin-right: 35px;">
+    <div class="page-leftheader">
+        <div class="page-title">Auctions</div>
+    </div>
+    <div class="page-rightheader ms-md-auto">
+        <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+            <div class="btn-list">
+                <a asp-action="AddAuction" asp-controller="admin" class="btn btn-primary me-3">Add New Auction</a>
+                <button class="btn btn-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Info"> <i class="feather feather-info"></i> </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row -->
+<div class="row " style="margin-left: 20px; margin-right: 20px;">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header  border-0">
+                <h4 class="card-title">Auctions List</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+                        <thead>
+                            <tr>
+                                <th class="border-bottom-0"> Name</th>
+                                <th class="border-bottom-0 w-10">Visible Marks</th>
+                                <th class="border-bottom-0">Dates</th>
+                                <th class="border-bottom-0">Price</th>
+                                <th class="border-bottom-0">Address</th>
+                                <th class="border-bottom-0">Bidders</th>
+                                <th class="border-bottom-0">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.VisibleRemarks)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.StartDate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ReservedPrice)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-icon btn-sm" href="@Url.Action("AddBidder", "Bidder", new { Id = item.Id })">
+                                            <i class="fe fe-user" data-bs-toggle="tooltip"> Add Bidder</i>
+                                        </a>
+                                        
+                                    </td>
+                                    
+                                    <td>
+                                        <a class="btn btn-primary btn-icon btn-sm" href="@Url.Action("Edit", "Admin", new { Id = item.Id })">
+                                            <i class="feather feather-edit" data-bs-toggle="tooltip" data-original-title="View/Edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-icon btn-sm" href="@Url.Action("Delete", "Admin", new { id = item.Id })" data-bs-toggle="tooltip" data-original-title="Delete">
+                                            <i class="feather feather-trash-2"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-leftheader ms-md-auto">
+        <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+            <div class="btn-list">
+                <a asp-action="Logout" asp-controller="login" class="btn btn-primary me-3">Logout</a>
+               &nbsp;&nbsp; <a asp-action="Dashboard" asp-controller="Admin" class="btn btn-primary me-3">Dashboard</a>
+             </div>           
+        </div>
+    </div>
+</div>
+<!-- End Row-->
+
+

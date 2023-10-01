@@ -1,0 +1,141 @@
+﻿@model ViewModels.AuctionVM
+
+@{
+    ViewData["Title"] = "AddAuction";
+}
+
+
+<hr />
+    <div class="row" style="margin-left: 25px; margin-right: 25px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Add Auction</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Save" method="Post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="VisibleRemarks" class="control-label"></label>
+                                    <input asp-for="VisibleRemarks" class="form-control" />
+                                    <span asp-validation-for="VisibleRemarks" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="HiddenRemarks" class="control-label"></label>
+                                    <input asp-for="HiddenRemarks" class="form-control" />
+                                    <span asp-validation-for="HiddenRemarks" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FlatName" class="control-label"></label>
+                                    <input asp-for="FlatName" class="form-control" />
+                                    <span asp-validation-for="FlatName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Address" class="control-label"></label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Floor" class="control-label"></label>
+                                    <input asp-for="Floor" class="form-control" />
+                                    <span asp-validation-for="Floor" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TowerName" class="control-label"></label>
+                                    <input asp-for="TowerName" class="form-control" />
+                                    <span asp-validation-for="TowerName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="StartDate" class="control-label"></label>
+                                    <input asp-for="StartDate" class="form-control" />
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EndDate" class="control-label"></label>
+                                    <input asp-for="EndDate" class="form-control" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ReservedPrice" class="control-label"></label>
+                                    <input asp-for="ReservedPrice" class="form-control" />
+                                    <span asp-validation-for="ReservedPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="BidIncrement" class="control-label"></label>
+                                    <input asp-for="BidIncrement" class="form-control" />
+                                    <span asp-validation-for="BidIncrement" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <center>
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </center>
+
+                    </form>
+                </div>
+            </div>
+            <div class="page-leftheader ms-md-auto">
+                <div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                    <div class="btn-list">
+                        <a asp-action="list" asp-controller="admin" class="btn btn-primary me-3">Cancel</a>
+                        <button class="btn btn-danger" data-bs-placement="top" data-bs-toggle="tooltip" title="Info"> <i class="feather feather-info"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

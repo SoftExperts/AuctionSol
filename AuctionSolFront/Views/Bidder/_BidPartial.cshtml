@@ -1,0 +1,66 @@
+﻿@model List<ViewModels.LoginVM>
+
+@{
+    ViewData["Title"] = "AddBidder";
+}
+
+<div class="row " style="margin-left: 20px; margin-right: 20px;">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header  border-0">
+                <h4 class="card-title">Bidder List</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+                        <thead>
+                            <tr>
+                                <th class="border-bottom-0"> User Id</th>
+                                <th class="border-bottom-0 w-10">UserName</th>
+                                <th class="border-bottom-0 w-10">Password</th>
+                                <th class="border-bottom-0">Phone</th>
+                                <th class="border-bottom-0">Amount Bid</th>
+                                <th class="border-bottom-0">Last Bid</th>
+                                <th class="border-bottom-0">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(Model!= null)
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td> @Html.DisplayFor(modelItem => item.UserId)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.UserName)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.Password)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.Phone)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.AmountBid)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.LastBid)</td>
+                                        
+
+                                        <td>
+                                           @* <a class="btn btn-primary btn-icon btn-sm" href="@Url.Action("Edit", "Bidder", new { Id = item.Id })">
+                                                <i class="feather feather-edit" data-bs-toggle="tooltip" data-original-title="View/Edit"></i>
+                                            </a>*@
+                                            <a class="btn btn-danger btn-icon btn-sm" href="@Url.Action("Delete", "Bidder", new { id = item.Id })" data-bs-toggle="tooltip" data-original-title="Delete">
+                                                <i class="feather feather-trash-2"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
